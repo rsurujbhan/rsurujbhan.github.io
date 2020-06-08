@@ -1,0 +1,9 @@
+{
+    "id": 12345,
+    "filters": [
+        {
+            "name": "chat ID",
+            "values": "3467"
+        }
+    ]
+}
