@@ -1,0 +1,32 @@
+<script>
+    // receive parameters from url query string 
+    const urlParams = new URLSearchParams(window.location.search);
+    const acctId = urlParams.get("p_acct_id");
+    const chatId = urlParams.get("chat_id");
+
+    // set source to id 223
+    var c0 = document.createElement("input");
+    c0.setAttribute("type", "hidden");
+    c0.setAttribute("name", "_source");
+    c0.setAttribute("value", "223");
+
+    // chat ID
+    var c1 = document.createElement("input");
+    c1.setAttribute("type", "hidden");
+    c1.setAttribute("name", "_source_id");
+    c1.setAttribute("value", chatId.toString());
+
+    // account ID
+    var a1 = document.createElement("input");
+    a1.setAttribute("type", "hidden");
+    a1.setAttribute("name", "p_question_session_acct_id");
+    a1.setAttribute("value", acctId.toString());
+
+    // form object
+    var formElement = document.getElementsByName("_main")[0];
+
+    // add elements to form
+    formElement.insertBefore(c0, formElement.lastChild);
+    formElement.insertBefore(c1, formElement.lastChild);
+    formElement.insertBefore(a1, formElement.lastChild);
+</script>

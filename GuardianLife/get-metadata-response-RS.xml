@@ -1,0 +1,39 @@
+<S:Envelope xmlns:S="http://schemas.xmlsoap.org/soap/envelope/">
+    <S:Body>
+        <ns2:get-metadata-response supports-checkpoints="false" 
+            xmlns:ns1="http://xmlns.oracle.com/connector/webservice/12.2.13/data/types" 
+            xmlns:ns2="http://xmlns.oracle.com/policyautomation/hub/12.2.13/metadata/types">
+            <ns2:Table name="Member" can-be-input="true" can-be-output="false" not-queryable="true" accepts-attachments="false">
+                <ns2:Field name="first_name" type="STRING" can-be-input="true" can-be-output="false" is-required="true"/>
+                <ns2:Field name="last_name" type="STRING" can-be-input="true" can-be-output="true" is-required="true"/>
+                <ns2:Field name="email_address" type="STRING" can-be-input="true" can-be-output="true" is-required="false"/>
+                <ns2:Field name="gender" type="STRING" can-be-input="true" can-be-output="false" is-required="true"/>
+                <ns2:Field name="date_of_birth" type="DATE" can-be-input="true" can-be-output="false" is-required="true"/>
+                <ns2:Field name="has_dependents" type="BOOLEAN" can-be-input="true" can-be-output="false" is-required="true"/>
+                <ns2:Link name="Dependents" target="Dependent" cardinality="C_1M"/>
+            </ns2:Table>
+            <ns2:Table name="Dependent" can-be-input="true" can-be-output="false" not-queryable="true" accepts-attachments="false">
+                <ns2:Field name="first_name_dp" type="STRING" can-be-input="true" can-be-output="false" is-required="true"/>
+                <ns2:Field name="last_name_dp" type="STRING" can-be-input="true" can-be-output="false" is-required="true"/>
+            </ns2:Table>
+            <ns2:Table name="ZipCode" can-be-input="true" can-be-output="false" not-queryable="false" accepts-attachments="false">
+                <ns2:Field name="postal_code" type="STRING" can-be-input="true" can-be-output="false" is-required="true"/>
+                <ns2:Field name="state" type="STRING" can-be-input="true" can-be-output="false" is-required="true"/>
+                <ns2:Link name="Cities" target="City" cardinality="C_1M"/>
+            </ns2:Table>
+            <ns2:Table name="City" can-be-input="true" can-be-output="false" not-queryable="false" accepts-attachments="false">
+                <ns2:Field name="postal_code" type="STRING" can-be-input="true" can-be-output="false" is-required="true"/>
+                <ns2:Field name="city_name" type="STRING" can-be-input="true" can-be-output="false" is-required="true"/>
+            </ns2:Table>
+            <ns2:Table name="Claim" can-be-input="false" can-be-output="true" not-queryable="true" accepts-attachments="true">
+                <ns2:Field name="first_name" type="STRING" can-be-input="false" can-be-output="true" is-required="true"/>
+                <ns2:Field name="first_name_dp" type="STRING" can-be-input="false" can-be-output="true" is-required="true"/>
+                <ns2:Link name="Doctors" target="Doctor" cardinality="C_1M"/>
+            </ns2:Table>
+            <ns2:Table name="Doctor" can-be-input="false" can-be-output="false" not-queryable="true" accepts-attachments="false">
+                <ns2:Field name="ciFirstNameDoc" type="STRING" can-be-input="false" can-be-output="true" is-required="false"/>
+                <ns2:Field name="ciLastNameDoc" type="STRING" can-be-input="false" can-be-output="true" is-required="false"/>
+            </ns2:Table>
+        </ns2:get-metadata-response>
+    </S:Body>
+</S:Envelope>

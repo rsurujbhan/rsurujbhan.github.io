@@ -1,0 +1,43 @@
+{
+    "answerType": {
+        "id": 1
+    },
+    "language": {
+        "id": 1
+    },
+    "accessLevels": [
+        {
+            "id": 1
+        },
+        {
+            "id": 2
+        },
+        {
+            "id": 3
+        },
+        {
+            "id": 4
+        }
+    ],
+    "statusWithType": {
+        "status": {
+            "id": 4
+        }
+    },
+    "products": [
+        {
+            "id": 1309
+        }
+    ],
+    "categories": [
+        {
+            "id": 1328
+        },
+        {
+            "id": 1329
+        }
+    ],
+    "summary": "Lorem ipsum dolor sit amet",
+    "question": "<b>Hello World</b>",
+    "solution": "<p>Be <b>bold</b> and be safe!</p>"
+}

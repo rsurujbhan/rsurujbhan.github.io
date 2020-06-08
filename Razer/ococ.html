@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+    <title>OCOC Test</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://tst1.dev.mysupport.razer.com/AgentWeb/module/extensibility/js/client/core/extension_loader.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+<body>
+
+    <div id="agentSessionToken"></div>
+    <div id="agentId"></div>
+    <div id="agentLogin"></div>
+    <div id="agentFirstName"></div>
+    <div id="agentLastName"></div>
+    <div id="agentEmail"></div>
+    <div id="incidentId"></div>
+    <div id="serialNumber"></div>
+    <div id="contactId"></div>
+    <div id="contactFirstName"></div>
+    <div id="contactLastName"></div>
+    <div id="contactEmailAddress"></div>
+    <div id="contactPhoneNumber"></div>
+    <div id="emailSentStatus"></div>
+    <br/>
+    <button id="sendPaymentLink">EVT send payment link email</button>
+
+    <script type="text/javascript">
+
+        function displayField(elementId, fieldValue) {
+            document.getElementById(elementId).innerHTML = elementId + ": " + "<b>" + fieldValue + "</b>";
+        }
+
+        var restEndpoint = null;
+        var agentSessionToken = null;
+        var sessionReady = false;
+        var buiLogger = null;
+        var incidentRecord = null;
+        var agentAccountId = 0;
+        var contactId = 0;
+        var incidentId = 0;
+        var contactFirstName = null;
+        var paymentLinkEmailHtml = null;
+
+        ORACLE_SERVICE_CLOUD.extension_loader.load("CNX-OCOC-App", "1.0").then(function (extensionProvider) {
+            buiLogger = extensionProvider.getLogger("OCOC");
+
+            /**
+            *  Global Context
+            */
+            extensionProvider.getGlobalContext().then(function (globalContext) {
+                agentAccountId = globalContext.getAccountId();
+                restEndpoint = globalContext.getInterfaceServiceUrl("REST");
+
+                globalContext.getSessionToken().then(function (sessionToken) {
+                    buiLogger.info("getSessionToken OK");
+                    agentSessionToken = sessionToken;
+                    sessionReady = true;
+                    displayField("agentSessionToken", agentSessionToken);
+
+                    getPaymentLinkEmailMessageBase(restEndpoint, agentSessionToken).then(function (response) {
+                        console.log("OK getPaymentLinkEmailMessageBase", response);
+                        paymentLinkEmailHtml = response.items[0].value;
+                    });
+
+                    getAccountDetails(restEndpoint, agentSessionToken, agentAccountId).then(function (response) {
+                        console.log("OK getAccountDetails", response);
+                        buiLogger.debug(JSON.stringify(response));
+                        var agentData = response.items[0].rows[0];
+                        displayField("agentId", agentData[0]);
+                        displayField("agentLogin", agentData[1]);
+                        displayField("agentFirstName", agentData[2]);
+                        displayField("agentLastName", agentData[3]);
+                        displayField("agentEmail", agentData[4]);
+                    }).catch(function (xhr) {
+                        console.log("ERROR getAccountDetails", xhr.status, xhr.statusText, xhr.responseText);
+                    }); //getAccountDetails
+                }); //getSessionToken
+            }); //getGlobalContext
+
+            /**
+            *  Workspace Extension
+            */
+            extensionProvider.registerWorkspaceExtension(function (workspaceRecord) {
+                var recordType = workspaceRecord.getWorkspaceRecordType(); //Incident, Contact
+                if (recordType === "Incident") {
+                    incidentRecord = workspaceRecord;
+                    console.log("OK incidentRecord", incidentRecord);
+                }
+                //console.log("recordType", recordType);
+                buiLogger.info("recordType:"+recordType);
+
+                workspaceRecord.addExtensionLoadedListener(function (e) {
+                    // runs ONCE...
+                    getFieldData(workspaceRecord).then(function (fieldData) {
+                        console.log("OK getFieldData", fieldData);
+                        buiLogger.debug(JSON.stringify(fieldData));
+                        contactId = fieldData.contactId;
+                        incidentId = fieldData.incidentId;
+                        contactFirstName = fieldData.firstName;
+                        displayField("incidentId", fieldData.incidentId);
+                        displayField("serialNumber", fieldData.serialNumber);
+                        displayField("contactId", fieldData.contactId);
+                        displayField("contactFirstName", fieldData.firstName);
+                        displayField("contactLastName", fieldData.lastName);
+                        displayField("contactEmailAddress", fieldData.emailAddress);
+                        displayField("contactPhoneNumber", fieldData.phoneNumber);
+                    }); //getFieldData
+
+                }); //addExtensionLoadedListener
+            }); //registerWorkspaceExtension
+        }); //extension_loader
+
+        /**
+        *  get Incident and Contact data from Workspace Record
+        */
+        function getFieldData(workspaceRecord) {
+            var promise = new ORACLE_SERVICE_CLOUD.ExtensionPromise();
+            workspaceRecord.getFieldValues(['Incident.IId', 'Incident.CO1$serial_num', 'Contact.CId','Contact.Name.First', 'Contact.Name.Last', 'Contact.Email.Addr', 'Contact.PhMobile']).then(function (wsFieldParam) {
+                promise.resolve({
+                    'incidentId': wsFieldParam.getField('Incident.IId').getValue(),
+                    'serialNumber': wsFieldParam.getField('Incident.CO1$serial_num').getValue(),
+                    'contactId': wsFieldParam.getField('Contact.CId').getValue(), 
+                    'firstName': wsFieldParam.getField('Contact.Name.First').getValue(), 
+                    'lastName': wsFieldParam.getField('Contact.Name.Last').getValue(), 
+                    'emailAddress': wsFieldParam.getField('Contact.Email.Addr').getValue(), 
+                    'phoneNumber': wsFieldParam.getField('Contact.PhMobile').getValue()
+                });
+            });
+            return promise;
+        }
+
+        /**
+        *  get Staff Account data
+        */
+        function getAccountDetails(restEndpoint, sessionToken, accountId) {
+            var roqlQuery = "SELECT id, login, name.first, name.last, emails.address FROM accounts WHERE id=" + accountId + ";";
+            var endpoint = restEndpoint + "/connect/latest/queryResults?query=" + encodeURI(roqlQuery);
+            return executeGetApiRequest(endpoint, sessionToken, 'OCOC-getAccountDetails');
+        }
+
+        /**
+        *  get Payment Link Email HTML body content from Message Base Entry
+        */
+        function getPaymentLinkEmailMessageBase(restEndpoint, sessionToken) {
+            var roqlQuery = "lookupName='CUSTOM_MSG_OCOC_PAYMENT_EMAIL_TEMPLATE'";
+            var endpoint = restEndpoint + "/connect/latest/messageBases/?fields=value&q=" + encodeURI(roqlQuery);
+            return executeGetApiRequest(endpoint, sessionToken, 'OCOC-getPaymentLinkEmailMsgBase');
+        }
+
+        /**
+        *  send Payment Link email message
+        */
+        function sendPaymentLinkEmail(restEndpoint, sessionToken, incidentId, threadText) {
+            var postData = {
+                incident: {
+                    id: incidentId,
+                    threads: [
+                        {
+                            text: threadText,
+                            entryType: { id: 2 }, //2=agent response
+                            contentType: { id: 2 }, //2=text/html
+                            channel: { id: 9 } //9=Email
+                        }
+                    ]
+                },
+                useEmailSignature: false
+            };
+            return new ORACLE_SERVICE_CLOUD.ExtensionPromise((resolve, reject) => {
+                $.ajax({
+                    url: restEndpoint + "/connect/latest/incidentResponse",
+                    method: 'POST',
+                    data: JSON.stringify(postData),
+                    dataType: 'json',
+                    contentType: 'application/json; charset=UTF-8',
+                    headers: {
+                        'Authorization': 'Session ' + sessionToken,
+                        'OSvC-CREST-Application-Context': 'OCOC-sendPaymentLinkEmail'
+                    },
+                    success: function (data) {
+                        resolve(data);
+                    },
+                    error: function (error) {
+                        reject(error);
+                    }
+                });
+            });
+        }
+
+        /**
+        * reusable function for Ajax GET requests
+        */
+        function executeGetApiRequest(apiEndpoint, authToken, appContext) {
+            //console.log("executeGetApiRequest", apiEndpoint, authToken, appId)
+            var requestHeaders = {
+                'Authorization': 'Session ' + authToken,
+                'OSvC-CREST-Application-Context': appContext
+            };
+            return new ORACLE_SERVICE_CLOUD.ExtensionPromise((resolve, reject) => {
+                $.ajax({
+                    url: apiEndpoint,
+                    method: 'GET',
+                    dataType: 'json',
+                    headers: requestHeaders,
+                    success: function (data) {
+                        resolve(data);
+                    },
+                    error: function (error) {
+                        reject(error);
+                    }
+                });
+            });
+        }
+
+        /**
+        * button handler for sending payment link email message to end-user using /incidentResponse service
+        */
+        document.getElementById("sendPaymentLink").addEventListener("click", function () {
+            const capitalizeStr = (s) => {
+                if (typeof s !== 'string') return '';
+                return s.charAt(0).toUpperCase() + s.slice(1);
+            }
+
+            if (incidentId > 0) {
+
+                // set First Name value with Proper Case formatting
+                paymentLinkEmailHtml = paymentLinkEmailHtml.replace("##FIRST_NAME##", capitalizeStr(contactFirstName));
+
+                // insert OCOC unique payment hyperlink
+                paymentLinkEmailHtml = paymentLinkEmailHtml.replace("##PAYMENT_URL##", "https://www.razer.com/about-razer");
+
+                sendPaymentLinkEmail(restEndpoint, agentSessionToken, incidentId, paymentLinkEmailHtml)
+                .then(function (response) {
+                    console.log("OK sendPaymentLinkEmail", response);
+                    if (response.incident.id > 0) {
+                        document.getElementById("emailSentStatus").innerHTML = "<b style='color:green;'>" + "Payment Link Sent OK!" + "</b>";
+                        console.log("OK refreshing...");
+                        // email was sent OK - refresh workspace:
+                        incidentRecord.executeEditorCommand('Refresh');
+                    }
+                }).catch(function (xhr) {
+                    console.log("ERROR sendIncidentResponse", xhr.status, xhr.statusText, xhr.responseText);
+                }); //sendPaymentLinkEmail
+            }
+            else {
+                alert("This Case is not available or not yet Saved! Save and Try Again.")
+            }
+        });
+
+    </script>
+</body>
+</html>

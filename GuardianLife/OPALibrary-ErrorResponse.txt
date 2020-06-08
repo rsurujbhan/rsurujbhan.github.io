@@ -1,0 +1,13 @@
+public function ErrorResponse($errorDetails = '')
+{
+    return
+    '<'.self::NS_ID_SOAP_ORG.':Fault>'.
+    '<faultcode>'.$errorDetails->status.'</faultcode>'.
+    '<faultstring>'.$errorDetails->message.'</faultstring>'.
+    '<detail>'.
+    '<'.self::NS_ID_META_DATA.':request-fault xmlns:'.self::NS_ID_META_DATA.'="'.self::NS_META_DATA.'" xmlns="'.self::NS_DATA.'">'.
+    '<'.self::NS_ID_META_DATA.':message>'.$errorDetails->system_error_msg.'</'.self::NS_ID_META_DATA.':message>'.
+    '</'.self::NS_ID_META_DATA.':request-fault>'.
+    '</detail>'.
+    '</'.self::NS_ID_SOAP_ORG.':Fault>';
+}

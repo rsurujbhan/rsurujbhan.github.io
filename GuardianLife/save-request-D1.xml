@@ -1,0 +1,39 @@
+<s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/" 
+    xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd" 
+    xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" 
+    xmlns:m="http://xmlns.oracle.com/policyautomation/hub/12.2.13/metadata/types" 
+    xmlns:r="http://xmlns.oracle.com/connector/webservice/12.2.13/data/types">
+    <s:Header>
+    </s:Header>
+    <s:Body>
+        <m:save-request root="Claim" region="en-US" language="en-US" timezone="Etc/GMT">
+            <m:tables>
+                <r:table name="Doctor">
+                    <r:row id="the treated doctor1" action="create">
+                        <r:input-field name="ciFirstNameDoc" field-type="text">
+                            <r:text-val>kathy</r:text-val>
+                        </r:input-field>
+                        <r:input-field name="ciLastNameDoc" field-type="text">
+                            <r:text-val>green</r:text-val>
+                        </r:input-field>
+                    </r:row>
+                </r:table>
+                <r:table name="Claim">
+                    <r:row id="global" action="create">
+                        <r:input-field name="first_name" field-type="text">
+                            <r:text-val>robert</r:text-val>
+                        </r:input-field>
+                        <r:input-field name="first_name_dp" field-type="text">
+                            <r:text-val>narendra</r:text-val>
+                        </r:input-field>
+                        <r:link name="Doctors" target="Doctor">
+                            <r:ref id="the treated doctor1"/>
+                        </r:link>
+                    </r:row>
+                </r:table>
+            </m:tables>
+            <m:audit-reports>
+            </m:audit-reports>
+        </m:save-request>
+    </s:Body>
+</s:Envelope>

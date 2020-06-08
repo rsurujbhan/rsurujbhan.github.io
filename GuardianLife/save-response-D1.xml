@@ -1,0 +1,15 @@
+<S:Envelope xmlns:S="http://schemas.xmlsoap.org/soap/envelope/">
+    <S:Body>
+        <ns2:save-response xmlns:ns1="http://xmlns.oracle.com/connector/webservice/12.2.13/data/types" 
+            xmlns:ns2="http://xmlns.oracle.com/policyautomation/hub/12.2.13/metadata/types">
+            <ns2:tables>
+                <ns2:table name="Doctor">
+                    <ns2:row orig-id="the treated doctor1" id="622"/>
+                </ns2:table>
+                <ns2:table name="Claim">
+                    <ns2:row orig-id="global" id="172"/>
+                </ns2:table>
+            </ns2:tables>
+        </ns2:save-response>
+    </S:Body>
+</S:Envelope>

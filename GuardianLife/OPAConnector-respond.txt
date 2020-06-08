@@ -1,0 +1,11 @@
+private function respond($p_soapxml, $code = 200, $type = "OK")
+{
+    if(strpos($p_soapxml, "request-fault") !== false) {
+        $code = 500;
+        $type = "Internal Server Error";
+    }
+    header(sprintf("HTTP/1.1 %d %s", $code, $type));
+    header('Content-Type: text/xml;charset=utf-8');
+    header('Content-Length: '.strlen($p_soapxml));
+    echo $p_soapxml;
+}
