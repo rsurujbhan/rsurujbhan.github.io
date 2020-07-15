@@ -43,10 +43,11 @@ function addTableHandler() {
                 }); //getExternalData
 
                 return dataHandlerPromise;
-            });
-        });
-    });
-}
+                
+            }); //addTableDataRequestListener
+        }); //registerAnalyticsExtension
+    }); //extension_loader
+} //addTableHandler
 
 function getExternalData() {
     var apiEndpoint = "https://apex.oracle.com/pls/apex/oraclejet/emp/";
