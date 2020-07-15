@@ -1,0 +1,60 @@
+{
+    "reportTablePackages": [
+        {
+            "name": "OracleJET",
+            "tables": [
+                {
+                    "name": "Emps",
+                    "label": "Employees",
+                    "description": "Apex Emps Service",
+                    "columns": [
+                        {
+                            "name": "empno",
+                            "label": "Number",
+                            "description": "Employee Number",
+                            "dataType": 1,
+                            "canDisplay": true,
+                            "canFilter": true,
+                            "canEdit": false,
+                            "isKey": true,
+                            "isNullable": false
+                        },
+                        {
+                            "name": "ename",
+                            "label": "Name",
+                            "description": "Employee Name",
+                            "dataType": 3,
+                            "canDisplay": true,
+                            "canFilter": true,
+                            "canEdit": false,
+                            "isKey": false,
+                            "isNullable": true
+                        },
+                        {
+                            "name": "job",
+                            "label": "Job",
+                            "description": "Employee Job",
+                            "dataType": 3,
+                            "canDisplay": true,
+                            "canFilter": true,
+                            "canEdit": true,
+                            "isKey": false,
+                            "isNullable": true
+                        },
+                        {
+                            "name": "sal",
+                            "label": "Salary",
+                            "description": "Employee Salary",
+                            "dataType": 1,
+                            "canDisplay": true,
+                            "canFilter": true,
+                            "canEdit": false,
+                            "isKey": false,
+                            "isNullable": true
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}
