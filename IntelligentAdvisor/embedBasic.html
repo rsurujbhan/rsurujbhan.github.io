@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+    <title>Intelligent Advisor | Embed Basic</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://sc-rsurujbhan-opa.rightnowdemo.com/web-determinations/staticresource/interviews.js"></script>
+    <!-- Oracle Sans font -->
+    <link type="text/css" rel="stylesheet" href="https://static.oracle.com/cdn/fnd/gallery/2101.2.0/OracleFont/OracleFont.min.css"/>
+</head>
+
+<body style="padding: 25px;">
+    <h3>Basic: Embed a single Intelligent Advisor interview on a web page</h3>
+    
+    <div style="display: inline-block; width:100%; border:5px dashed red;">
+        <div id="interviewDiv" style="width: 100%; display: block; margin-left: auto; margin-right:auto; float: left">
+            <!-- interview will go here -->
+        </div>
+    </div>
+
+    <script>
+        // page DOM element to render the interview inside of
+        var el = document.getElementById("interviewDiv");
+
+        // URL of the Web Determinations server that the interview to embed resides on
+        var webDeterminationsUrl = "https://sc-rsurujbhan-opa.rightnowdemo.com/web-determinations";
+        
+        // name of the deployed policy model to start the interview for
+        var deploymentName = "Safety Inspection";
+        
+        // execute
+        OraclePolicyAutomationInterview.StartInterview(el, webDeterminationsUrl, deploymentName);
+    </script>
+
+</body>
+</html>
