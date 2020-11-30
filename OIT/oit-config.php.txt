@@ -1,0 +1,51 @@
+<?php
+header("Access-Control-Allow-Origin: *");
+
+$result = array(
+    "loader" =>
+    array(
+        "common" =>
+        array(
+            "attributes" =>
+            array(
+                "data-oit-theme-vars" =>
+                array(
+                    'brandColor' => "#c72030",
+                )
+            )
+        )
+    ),
+    'inlays' => 
+    array(
+        'types' => 
+        array(
+            'inlay-oracle-chat-embedded' => 
+            array(
+                'strings' => 
+                array(
+                    'title' => 'Chat With Us',
+                    'launchFormSubjectLabel' => 'How Can We Help?',
+                    'launchFormEmailLabel' => 'Email Address',
+                    'launchFormProductLabel' => 'Product Model Number',
+                    'selectorPlaceholderProduct' => 'Select your product model'
+                ),
+            ),
+        ),
+    ),
+);
+
+respond($result);
+
+/**
+ * This function returns a JSON representation of the input array in response to the http request
+ *
+ * @param: data array
+ * @return: JSON-formatted string
+ */
+function respond($p_data)
+{
+	header("Content-Type: application/json; charset=UTF-8");
+	header("X-Content-Type-Options: nosniff");
+	echo json_encode($p_data);
+}
+?>
