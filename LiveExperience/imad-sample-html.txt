@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+    <title>Oracle Live Experience</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+    <!-- <link rel="icon" href="./images/favicon-32.png" type="image/png" /> -->
+
+    <!-- Oracle Live Experience JavaScript SDK -->
+    <script type="text/javascript" src="./js/oracle.live.api.all.js"></script>
+
+    <!-- jQuery 3.x  -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+    <!-- Oracle font -->
+    <link type="text/css" rel="stylesheet" href="https://static.oracle.com/cdn/fnd/gallery/2301.0.0/OracleFont/OracleFont.min.css" />
+</head>
+
+<body style="padding: 25px;">
+    <h1>Oracle Live Experience</h1>
+
+    <h3 id="lxStatus" style="color: #C74634;">Ready</h3>
+
+    <script>
+
+        const updateStatus = (text) => {
+            document.getElementById("lxStatus").innerHTML = text;
+        }
+
+        window.onload = () => {
+
+            const getAuthToken = (callback) => {
+                // get the auth token
+                fetch(new Request(
+                    "https://MY-HOST/LX-AUTH-TOKEN-SERVICE"
+                )).then(response => {
+                    return response.json();
+                }).then(auth => {
+                    callback(auth.access_token, auth.expires_in);
+                });
+            };
+
+            // Note: getAuthToken has a callback parameter which is provided by this arrow function
+            getAuthToken((myAuthToken, myTokenExpiry) => {
+                liveApi.controller.service.userID = "MY_USER_ID";
+                liveApi.controller.service.tenantID = "MY_LX_TENANT";
+                liveApi.controller.service.clientID = "MY_CLIENT_ID";
+
+                // auth token and expiry are returned during Live Experience Authentication
+                liveApi.controller.service.authToken = myAuthToken;
+
+                // the callback should update the authToken property with the refreshed token
+                liveApi.controller.service.authRefresh(myTokenExpiry, () => {
+                    app.getAuthToken((jwt) => {
+                        liveApi.controller.service.authToken = jwt;
+                    });
+                });
+
+                // required
+                liveApi.controller.contextAttributes.set("appLocation", "Collaboration");
+
+                // optional context attributes
+                liveApi.controller.contextAttributes.set("email", "robert@oraclecorp.com.test");
+                liveApi.controller.contextAttributes.set("fullName", "Rob Smith");
+                liveApi.controller.contextAttributes.set("location", "Irvine, CA");
+                liveApi.controller.contextAttributes.set("phone", "949-555-1212");
+
+                liveApi.controller.addComponent();
+
+                updateStatus("Ready");
+
+                // OPTIONAL event registrations:
+
+                $("body").on(liveApi.controller.events.LiveConnecting, () => {
+                    updateStatus("LiveConnecting - connecting to associate...");
+                });
+                $("body").on(liveApi.controller.events.LiveConnected, () => {
+                    updateStatus("LiveConnected - connected with associate");
+                });
+                $("body").on(liveApi.controller.events.LiveCanceled, () => {
+                    updateStatus("LiveCanceled - cancelled call attempt");
+                });
+                $("body").on(liveApi.controller.events.LiveEnded, () => {
+                    updateStatus("LiveEnded - the call has ended");
+                    setTimeout(() => { 
+                        updateStatus("Ready");
+                    }, 5000);
+                });
+                $("body").on(liveApi.controller.events.LiveWaiting, () => {
+                    updateStatus("LiveWaiting");
+                });
+                $("body").on(liveApi.controller.events.LiveLoginSuccess, (e) => {
+                    updateStatus("LiveLoginSuccess");
+                });
+                $("body").on(liveApi.controller.events.LiveLoginError, () => {
+                    updateStatus("LiveLoginError");
+                });
+                $("body").on(liveApi.controller.events.LiveStartCall, () => {
+                    updateStatus("LiveStartCall");
+                });
+                $("body").on(liveApi.controller.events.LiveStreamActive, () => {
+                    updateStatus("LiveStreamActive");
+                });
+                $("body").on(liveApi.controller.events.LiveStreamError, () => {
+                    updateStatus("LiveStreamError");
+                });
+                $("body").on(liveApi.controller.events.LiveRemoteVideoLoading, () => {
+                    updateStatus("LiveRemoteVideoLoading");
+                });
+                $("body").on(liveApi.controller.events.LiveRemoteVideoLoaded, () => {
+                    updateStatus("LiveRemoteVideoLoaded");
+                });
+                $("body").on(liveApi.controller.events.LiveDiagnosticsAudioVideoStarted, () => {
+                    updateStatus("LiveDiagnosticsAudioVideoStarted");
+                });
+                $("body").on(liveApi.controller.events.LiveDiagnosticsAudioStarted, () => {
+                    updateStatus("LiveDiagnosticsAudioStarted");
+                });
+                $("body").on(liveApi.controller.events.LiveDiagnosticsComplete, () => {
+                    updateStatus("LiveDiagnosticsComplete");
+                });
+                $("body").on(liveApi.controller.events.LiveDiagnosticsFailed, () => {
+                    updateStatus("LiveDiagnosticsFailed");
+                });
+                $("body").on(liveApi.controller.events.LiveAssociateAnnotationStarted, () => {
+                    updateStatus("LiveAssociateAnnotationStarted");
+                });
+                $("body").on(liveApi.controller.events.LiveAssociateAnnotationStopped, () => {
+                    updateStatus("LiveAssociateAnnotationStopped");
+                });
+                $("body").on(liveApi.controller.events.LiveAssociateAnnotationReceived, () => {
+                    updateStatus("LiveAssociateAnnotationReceived");
+                });
+                $("body").on(liveApi.controller.events.LiveAssociateVideoAnnotationStarted, () => {
+                    updateStatus("LiveAssociateVideoAnnotationStarted");
+                });
+                $("body").on(liveApi.controller.events.LiveAssociateVideoAnnotationStopped, () => {
+                    updateStatus("LiveAssociateVideoAnnotationStopped");
+                });
+                $("body").on(liveApi.controller.events.LiveAssociateVideoAnnotationReceived, () => {
+                    updateStatus("LiveAssociateVideoAnnotationReceived");
+                });
+            });
+        };
+    </script>
+</body>
+</html>
