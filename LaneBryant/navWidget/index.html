@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LB-Sample</title>
+    <link rel="icon" href="https://www.lanebryant.com/on/demandware.static/Sites-LaneBryant-Site/-/default/dw7746428e/images/favicons/favicon-16x16.png" type="image/png" sizes="16x16" />
+    <link rel="stylesheet" href="./app.css" type="text/css" />
+</head>
+
+<body style="padding: 20px;">
+    <img class="lb" src="https://www.lanebryant.com/on/demandware.static/Sites-LaneBryant-Site/-/default/dwbf30de1e/images/lb-logo.svg" alt="Lane Bryant">
+    <br />
+    <h3>© 2022 Lane Bryant Inc.</h3>
+
+    <h2 id="uiStatus" style="color: #C74634;">Ready</h2>
+
+    <div id="univeralWidgetExample">
+        <div id="mswContainer">
+            <div id="mswOptions">
+                <div id="orderStatus" class="mswOption" data-description="Order Status">
+                    <span class="oj-ux-ico-sales-order mswOptionIcon"></span>
+                    <span class="mswOptionText">Order Status</span>
+                </div>
+                <div id="chatBot" class="mswOption" data-description="a ChatBot">
+                    <span class="oj-ux-ico-robotics-adapter mswOptionIcon"></span>
+                    <span class="mswOptionText">Automated Assistant</span>
+                </div>
+                <div id="liveChat" class="mswOption" data-description="Live Agent Chat">
+                    <span class="oj-ux-ico-user-available mswOptionIcon"></span>
+                    <span class="mswOptionText">Connect with a Brand Specialist</span>
+                </div>
+                <div id="shippingInfo" class="mswOption" data-description="Shipping Info">
+                    <span class="oj-ux-ico-truck mswOptionIcon"></span>
+                    <span class="mswOptionText">Shipping Info</span>
+                </div>
+                <div id="feedback" class="mswOption" data-description="Feedback">
+                    <span class="oj-ux-ico-star-half mswOptionIcon"></span>
+                    <span class="mswOptionText">Feedback</span>
+                </div>
+                <div id="privacy" class="mswOption" data-description="Privacy Notice">
+                    <span class="oj-ux-ico-newspaper mswOptionIcon"></span>
+                    <span class="mswOptionText">Privacy Notice</span>
+                </div>
+            </div>
+            <div id="mswIconContainer" class="mswIconContainerInit">
+                <span id="mswMainIcon" class="oj-ux-ico-oracle-chat"></span>
+                <span id="mswIconText">Need Help?</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        
+        const attrName = "data-description";
+        
+        let openStatus = false;
+
+        const updateStatus = (text) => {
+            document.getElementById("uiStatus").innerHTML = text;
+        }
+
+        const helpClick = () => {
+            if (!openStatus) {
+                document.getElementById("mswIconContainer").classList.add("mswContainerOpen");
+                document.getElementById("mswOptions").classList.add("mswShowOption");
+                updateStatus("widget is open!");
+            }
+            else {
+                document.getElementById("mswIconContainer").classList.remove("mswContainerOpen");
+                document.getElementById("mswOptions").classList.remove("mswShowOption");
+                // update after 2.5 seconds
+                setTimeout(() => {
+                    updateStatus("widget has been closed");
+                }, 2500);
+            }
+            // swap boolean flag
+            openStatus = !openStatus;
+        }
+
+        window.addEventListener('load', () => {
+            document.getElementById('mswIconContainer').addEventListener('click', helpClick, false);
+            document.querySelectorAll(`div[${attrName}]`).forEach((option) => {
+                option.addEventListener('click', (e) => {
+                    let clicked = e.target.getAttribute(attrName);
+                    if (!clicked) {
+                        clicked = e.target.parentNode.getAttribute(attrName);
+                    }
+                    updateStatus(`you clicked on the option for ${clicked}!`);
+                });
+            }, false);
+
+        });
+
+    </script>
+
+</body>
+</html>
