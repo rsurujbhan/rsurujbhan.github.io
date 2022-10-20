@@ -1,0 +1,129 @@
+/* Oracle 2301.2.0 Fonts for typography and icons/images */
+@import url('//static.oracle.com/cdn/fnd/gallery/2301.2.0/OracleFont/OracleFont.min.css');
+@import url('//static.oracle.com/cdn/fnd/gallery/2301.2.0/images/iconfont/ojuxIconFont.min.css');
+
+.lb {
+    height: 1.5rem;
+    filter: invert(26%) sepia(53%) saturate(4589%) hue-rotate(312deg) brightness(92%) contrast(101%);
+}
+
+#mswContainer {
+    z-index: 99999;
+    position: fixed;
+    bottom: 30px;
+    right: 120px;
+}
+
+#mswIconContainer {
+    z-index: 99999;
+    background-color: #f8f8f8 !important;
+    border-radius: 10px;
+    box-shadow: -1px -1px 26px -6px rgba(0, 0, 0, 0.71);
+    transition: 0.5s ease;
+    text-align: center;
+}
+
+#mswMainIcon {
+    font-size: 60px;
+    padding: 5px;
+    color: #2C5967;
+    transition: 0.5s ease;
+    cursor: pointer;
+    display: inline-block;
+}
+
+#mswIconText {
+    color: #2C5967;
+    display: block;
+    font-size: 12px;
+    margin: -6px 5px 0;
+}
+
+#mswIconContainer:not(.mswContainerOpen):hover #mswMainIcon {
+    color: #d0006f;
+    transform: rotateY(-180deg);
+    transition: visibility 1s, transform 1s;
+}
+
+#mswIconContainer.mswContainerOpen {
+    margin-right: 0;
+}
+
+#mswIconContainer.mswContainerOpen #mswMainIcon {
+    font-size: 30px !important;
+    right: 40px !important;
+}
+
+#mswIconContainer.mswContainerOpen #mswIconText {
+    display: none;
+}
+
+#mswOptions {
+    display: none;
+    color: #00395a;
+}
+
+#mswOptions.mswShowOption {
+    position: absolute;
+    display: block;
+    bottom: 45px;
+    left: -135px;
+    width: 280px;
+    background-color: #fff !important;
+    z-index: 99990;
+    box-shadow: -1px -1px 20px -6px rgba(0, 0, 0, 0.71);
+}
+
+.mswOption {
+    position: relative;
+    display: block;
+    font-size: 22px !important;
+    border-top: 1px solid #00395a !important;
+    left: 0;
+    width: 280px;
+    height: 40px;
+    padding: 5px 0 0;
+    transition: 0.5s ease-in-out;
+    opacity: 0;
+    cursor: pointer;
+    overflow: hidden;
+    z-index: 99998;
+    background-color: transparent;
+}
+
+.mswOption::before {
+    transform: rotate(45deg);
+    transition: all .3s cubic-bezier(0.25, 0.1, 0.2, 1);
+    content: "";
+    background-color: #ea989e !important;
+    position: absolute;
+    top: -150px;
+    right: auto;
+    left: -10px;
+    z-index: -1;
+    width: 0;
+    height: 300px;
+}
+
+.mswOption:hover::before {
+    transform: rotate(70deg);
+    width: 280px;
+}
+
+.mswOption:hover {
+    color: #fff;
+}
+
+.mswOptionIcon {
+    margin: 5px;
+    vertical-align: middle;
+}
+
+.mswOptionText {
+    font-size: 16px;
+    margin-top: -5px;
+}
+
+#mswOptions.mswShowOption .mswOption {
+    opacity: 1 !important;
+}
