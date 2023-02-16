@@ -1,0 +1,78 @@
+{
+    "loader": {
+        "common": {
+            "attributes": {
+                "data-oit-theme-vars": {
+                    "brandColor": "#d0006f",
+                    "inlayWidth": "400px"
+                }
+            }
+        }
+    },
+    "inlays": {
+        "pages": {
+            "lanebryant-en": {
+                "types": {
+                    "inlay-oracle-chat-embedded": {
+                        "strings": {
+                            "title": "Chat Support",
+                            "launchFormSubjectLabel": "Question",
+                            "launchFormEmailLabel": "Email Address",
+                            "launchFormHeaderText": "This area can be customized. By continuing, you agree that this chat may be recorded.",
+                            "launchFormFooterText": "This area can also be customized! [Privacy Policy](https://www.lanebryant.com/help/privacy-policy)"
+                        },
+                        "attributes": {
+                            "agent-greeting-mode": "ENABLE",
+                            "post-chat-print-transcript-enabled": false,
+                            "title-icon-enabled": true,
+                            "avatars": [
+                                {
+                                    "type": "AGENT",
+                                    "enabled": true,
+                                    "style": "IMAGE",
+                                    "url": "https://localhost/image4agent.png"
+                                },
+                                {
+                                    "type": "USER",
+                                    "enabled": true,
+                                    "style": "INITIALS"
+                                }
+                            ],
+                            "launch-form-fields": [
+                                {
+                                    "hidden": false,
+                                    "name": "EMAIL",
+                                    "required": true
+                                },
+                                {
+                                    "hidden": false,
+                                    "name": "c$order_number",
+                                    "required": false
+                                },
+                                {
+                                    "hidden": false,
+                                    "name": "SUBJECT",
+                                    "required": true
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "types": {
+            "inlay-oracle-chat-embedded": {
+                "attributes": {
+                    "inlay-hidden": true,
+                    "inlay-mode": "BOTTOM_LEFT",
+                    "persistence-enabled": true,
+                    "persistence-mobile-load-state": "MAXIMIZED",
+                    "file-upload-enabled": true,
+                    "post-chat-print-transcript-enabled": true,
+                    "audio-enabled": true,
+                    "off-the-record-enabled": true
+                }
+            }
+        }
+    }
+}
