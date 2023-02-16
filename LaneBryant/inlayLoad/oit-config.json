@@ -30,7 +30,7 @@
                                     "type": "AGENT",
                                     "enabled": true,
                                     "style": "IMAGE",
-                                    "url": "https://localhost/image4agent.png"
+                                    "url": "https://yourhost/image4agent.png"
                                 },
                                 {
                                     "type": "USER",
