@@ -1,5 +1,6 @@
 const INLAY_ID = "chatInlayEmbed";
 
+// Show the Embedded Chat Inlay in expanded mode by firing custom show event
 const fireChatInlayShowEvent = () => {
     // TODO: disable console msg for Production
     console.log("inlay-oracle-chat-embedded-loaded OK");
@@ -15,16 +16,22 @@ const loadInlay = () => {
     const oitPageId = "lanebryant-en";
     const siteIntfName = "lanebryant--tst1";
 
+    // Wait for the Embedded Chat Inlay to load
     document.addEventListener('inlay-oracle-chat-embedded-loaded', fireChatInlayShowEvent);
 
+    /**
+     * Embedded Chat Inlay element
+     */
     let chatInlayElemEmbed = document.createElement("inlay-oracle-chat-embedded");
     chatInlayElemEmbed.setAttribute("id", INLAY_ID);
     chatInlayElemEmbed.setAttribute("class", "inlay");
     chatInlayElemEmbed.setAttribute("site-type", "b2c-service");
     chatInlayElemEmbed.setAttribute("site-url", `${siteIntfName}.widget.custhelp.com`);
-
     document.body.appendChild(chatInlayElemEmbed);
 
+    /**
+     * OIT Loader Script
+     */
     let chatInlayLoader = document.createElement("script");
     chatInlayLoader.setAttribute("id", "oit-loader");
     chatInlayLoader.setAttribute("src", `https://${siteIntfName}.widget.custhelp.com/s/oit/latest/common/v0/libs/oit/loader.js`);
