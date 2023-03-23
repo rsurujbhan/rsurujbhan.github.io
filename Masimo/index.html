@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./app.css">
+    <link rel="shortcut icon" href="https://www.oracle.com/favicon.ico" />
+    <title>Denon Customer Support - Embedded Chat Inlay</title>
+</head>
+
+<body style="padding: 20px;">
+
+    <h2>© 2023 Masimo. All Rights Reserved.</h2>
+
+    <div id="customer-support" class="bg-dark">
+        <div class="support-block">
+            <h4 class="oj-typography-heading-xl my-text">Live chat</h4>
+            <p class="oj-typography-heading-xs my-text">Mon - Fri 9AM - 9PM EST</p>
+            <p class="oj-typography-body-md my-text-grey">Connect with a specialist for help with products or an order.</p>
+            <p><a id="chatLink" href="#">PENDING</a></p>
+            <div id="chatInlay"></div>
+        </div>
+    </div>
+
+    <script>
+
+        const INLAY_ID = 'inlay-oracle-chat-embedded';
+
+        // 1. Wait for the OIT API to load
+        const execChatInlay = () => {
+            (window.oit && window.oit.inlayIsLoaded)
+                ? waitForChatInlay()
+                : document.addEventListener('oit-loaded', waitForChatInlay);
+        }
+
+        // 2. Wait for the Embedded Chat Inlay to load
+        const waitForChatInlay = () => {
+            (window.oit.inlayIsLoaded(INLAY_ID))
+                ? fireChatInlayShowEvent()
+                : document.addEventListener('inlay-oracle-chat-embedded-loaded', fireChatInlayShowEvent);
+        }
+
+        // 3. Show the Embedded Chat Inlay by firing a custom show event
+        const fireChatInlayShowEvent = () => {
+            console.log("inlay-oracle-chat-embedded-loaded OK");
+
+            const chatLinkElem = document.getElementById("chatLink");
+
+            chatLinkElem.text = "Start a chat";
+            chatLinkElem.addEventListener("click", () => {
+                // show embedded inlay
+                window.oit.fire(new oit.CustomEvent('inlay-oracle-chat-embedded-show', {
+                    detail: { id: INLAY_ID }
+                }));
+            });
+        }
+
+        const ready = (fn) => {
+            if (document.attachEvent ? document.readyState === "complete" : document.readyState !== "loading") {
+                fn();
+            } else {
+                document.addEventListener('DOMContentLoaded', fn);
+            }
+        }
+
+        ready(execChatInlay);
+
+    </script>
+
+    <script>
+        window.EESvcs = { 'eeid': 200106307429 };
+    </script>
+    <script src="//ee.channels.ocs.oraclecloud.com/js/eesvcs.js"></script>
+</body>
+</html>
