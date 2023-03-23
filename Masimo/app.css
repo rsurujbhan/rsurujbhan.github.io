@@ -1,0 +1,36 @@
+@import url('//static.oracle.com/cdn/jet/14.0.5/default/css/redwood/oj-redwood-min.css');
+@import url('//static.oracle.com/cdn/fnd/gallery/2304.0.2/OracleFont/OracleFont.min.css');
+@import url('//static.oracle.com/cdn/fnd/gallery/2304.0.2/images/iconfont/ojuxIconFont.min.css');
+
+#customer-support {
+    padding: 50px;
+    height: 185px;
+    color: #fff;
+
+    display: flex;
+    /* justify-content: center; */
+    align-items: center;
+
+    /* display: grid;
+    place-items: center; */
+}
+
+.bg-dark {
+    background-color: #0b131a;
+}
+
+.my-text {
+    color: #fff;
+}
+
+.my-text-grey {
+    color: #A8AFB4
+}
+
+#customer-support a {
+    color: #fff;
+    text-decoration: underline;
+}
+#customer-support a:hover {
+    color: #ed4d33;
+}
