@@ -1,5 +1,9 @@
 const INLAY_ID = "chatInlayEmbed";
 
+const _isEmpty = (str) => {
+    return (!str || 0 === str.length || str === undefined);
+}
+
 // Show the Embedded Chat Inlay in expanded mode by firing custom show event
 const fireChatInlayShowEvent = () => {
     // TODO: disable console msg for Production
@@ -9,6 +13,42 @@ const fireChatInlayShowEvent = () => {
             id: INLAY_ID
         }
     }));
+    
+    const addStylesAndScripts = () => {
+        const inlayLaunchForm = window.document.getElementById(INLAY_ID);
+        const chatEmbeddedInlay = inlayLaunchForm.contentDocument || inlayLaunchForm.contentWindow.document;
+        const inlayHead = chatEmbeddedInlay.getElementsByTagName("head")[0];
+
+        // inject custom styling overrides
+        // TODO: replace href with location to dedicated CSS file
+        let link = document.createElement("link");
+        link.rel = "stylesheet";
+        link.href = "https://yourhost/oit-custom.css";
+        link.type = "text/css";
+        inlayHead.appendChild(link);
+
+        const storageEventHandler = (event) => {
+            if (event.key === "inlay-oracle-chat-embedded-chatStatus") {
+                const status = JSON.parse(event.newValue);
+                if (!_isEmpty(status.chatStatus)) {
+                    if (status.chatStatus === "connected") {
+                        alert("chat is connected!");
+                        // TODO: add site-wide logic to keep track of a Chat being in progress to manage persistence across page turns
+                    }
+                    if (status.chatStatus === "disconnected") {
+                        alert("chat is disconnected!");
+                        // TODO: the Chat is done - hide Live Chat icon - trigger MC to reappear
+                        // TODO: delay the execution of 'removeInlay' to allow time for customer to access Survey hyperlink
+                        setTimeout(() => {
+                            window.oit.removeInlay(INLAY_ID);
+                        }, 7500);
+                    }
+                }
+            }
+        };
+        window.addEventListener("storage", storageEventHandler, false);
+    };
+    setTimeout(addStylesAndScripts, 0);
 }
 
 const loadInlay = () => {
