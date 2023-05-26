@@ -1,0 +1,15 @@
+.oit-chat-bubble-message a {
+    color: #f06ea7;
+    font-weight: 800;
+    border-bottom: 1px solid #f06ea7;
+}
+
+.oit-chat-bubble-message a:hover {
+    text-decoration: none;
+    color: #ca1f4c;
+    border-bottom: 1px solid #ca1f4c;
+}
+
+.oit-chat-bubble-message a:visited {
+    color: #ca1f4c;
+}
