@@ -41,6 +41,9 @@ const fireChatInlayShowEvent = () => {
                         // TODO: delay the execution of 'removeInlay' to allow time for customer to access Survey hyperlink
                         setTimeout(() => {
                             window.oit.removeInlay(INLAY_ID);
+                            // remove OIT Loader
+                            const oitLdr = document.getElementById("oit-loader");
+                            if (oitLdr !== null) oitLdr.remove();
                         }, 7500);
                     }
                 }
