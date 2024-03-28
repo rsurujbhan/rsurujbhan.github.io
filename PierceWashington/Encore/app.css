@@ -1,3 +1,4 @@
+/* Oracle Sans - the Oracle font from the Redwood Design System */
 @import url('//static.oracle.com/cdn/fnd/gallery/2407.0.1/OracleFont/OracleFont.min.css');
 
 body, html {
@@ -35,9 +36,9 @@ footer {
 
 .mainWrapper {
     display: flex;
-    flex: auto; /* Grow to fill the available space */    
-    align-items: center; /* Align vertically */
-    justify-content: center; /* Align horizontally */
+    flex: auto; /* grow to fill available space */
+    align-items: center; /* align vertically */
+    justify-content: center; /* align horizontally */
 }
 
 .interview {
