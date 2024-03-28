@@ -1,0 +1,45 @@
+@import url('//static.oracle.com/cdn/fnd/gallery/2407.0.1/OracleFont/OracleFont.min.css');
+
+body, html {
+    height: 100%;
+    margin: 0;
+}
+
+.center {
+    text-align: center;
+}
+
+.hidden {
+    display: none;
+}
+
+header, footer {
+    flex: none;
+    padding: 20px;
+    text-align: center;
+}
+
+header {
+    background: #C74634;
+}
+
+footer {
+    background: #759C6C;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.mainWrapper {
+    display: flex;
+    flex: auto; /* Grow to fill the available space */    
+    align-items: center; /* Align vertically */
+    justify-content: center; /* Align horizontally */
+}
+
+.interview {
+    width: 100%; 
+}
