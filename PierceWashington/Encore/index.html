@@ -31,11 +31,15 @@
 
         <footer>
             <!-- footer -->
+            <b>participants:</b> <span id="numParticipants">pending</span> / <b>rooms:</b> <span id="numRooms">pending</span>
         </footer>
 
     </div>
 
     <script>
+        const isEmpty = (str) => {
+            return (!str || 0 === str.length || str === undefined);
+        };
 
         const interviewElem = document.getElementById("embeddedInterview");
         const loaderElem = document.getElementById("loader");
@@ -47,6 +51,23 @@
             interviewElem.classList.add("interview");
         }
 
+        const doExit = (url) => {
+            // called when interview wants to redirect to an external location
+            console.log("doExit", url);
+            // navigate current page to specified url
+            window.location = url;
+        }
+
+        const onEventHandler = (event) => {
+            console.log("onEventHandler", event);
+            if (!isEmpty(event.numParticipants)) {
+                document.getElementById("numParticipants").textContent = event.numParticipants;
+            }
+            if (!isEmpty(event.numRooms)) {
+                document.getElementById("numRooms").textContent = event.numRooms;
+            }
+        }
+
         const interviews = [
             {
                 operation: "start",
@@ -55,7 +76,9 @@
                 locale: "en-US",
                 disableEnforcedStyling: true,
                 loadCustomizations: true,
-                onLoad: onLoadHandler
+                onLoad: onLoadHandler,
+                onNavigate: doExit,
+                onCustomEvent: onEventHandler
             }
         ];
 
@@ -67,4 +90,5 @@
     </script>
 
 </body>
+
 </html>
