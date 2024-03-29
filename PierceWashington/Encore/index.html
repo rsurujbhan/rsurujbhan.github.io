@@ -43,6 +43,8 @@
 
         const interviewElem = document.getElementById("embeddedInterview");
         const loaderElem = document.getElementById("loader");
+        const numParticipants = document.getElementById("numParticipants");
+        const numRooms = document.getElementById("numRooms");
 
         const webDeterminationsUrl = "https://sc-rsurujbhan-opa.rightnowdemo.com/web-determinations";
 
@@ -61,10 +63,10 @@
         const onEventHandler = (event) => {
             console.log("onEventHandler", event);
             if (!isEmpty(event.numParticipants)) {
-                document.getElementById("numParticipants").textContent = event.numParticipants;
+                numParticipants.textContent = event.numParticipants;
             }
             if (!isEmpty(event.numRooms)) {
-                document.getElementById("numRooms").textContent = event.numRooms;
+                numRooms.textContent = event.numRooms;
             }
         }
 
